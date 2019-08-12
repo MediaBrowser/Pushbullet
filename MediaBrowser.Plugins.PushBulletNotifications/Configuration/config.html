@@ -55,7 +55,7 @@
 
                         })[0] || {};
 
-                        $('#chkEnablePushBullet', page).checked(pushBulletConfig.Enabled || false).checkboxradio("refresh");
+                        page.querySelector('#chkEnablePushBullet').checked = pushBulletConfig.Enabled || false;
                         $('#txtPushBulletAuthKey', page).val(pushBulletConfig.Token || '');
                         $('#txtPushBulletDeviceId', page).val(pushBulletConfig.DeviceId || '');
 
@@ -117,7 +117,7 @@
 
                             return '<option value="' + user.Id + '">' + user.Name + '</option>';
 
-                        })).selectmenu('refresh').trigger('change');
+                        })).trigger('change');
 
                     });
 
@@ -147,7 +147,7 @@
 
                         pushBulletConfig.MediaBrowserUserId = userId;
 
-                        pushBulletConfig.Enabled = $('#chkEnablePushBullet', form).checked();
+                        pushBulletConfig.Enabled = form.querySelector('#chkEnablePushBullet').checked;
                         pushBulletConfig.Token = $('#txtPushBulletAuthKey', form).val();
                         pushBulletConfig.DeviceId = $('#txtPushBulletDeviceId', form).val();
 
