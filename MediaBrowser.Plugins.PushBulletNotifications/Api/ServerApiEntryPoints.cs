@@ -51,7 +51,8 @@ namespace MediaBrowser.Plugins.PushBulletNotifications.Api
             {
                 {"type", "note"},
                 {"title", "Test Notification" },
-                {"body", "This is a test notification from MediaBrowser"}
+                {"body", "This is a test notification from MediaBrowser"},
+                {"channel_tag", options.ChannelTag}
             };
 
             var _httpRequest = new HttpRequestOptions();

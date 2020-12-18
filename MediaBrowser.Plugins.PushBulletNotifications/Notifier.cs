@@ -50,10 +50,11 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
                    // {"device_iden", options.DeviceId},
                     {"type", "note"},
                     {"title", request.Name},
-                    {"body", request.Description}
+                    {"body", request.Description},
+                    {"channel_tag", options.ChannelTag}
                 };
 
-            _logger.Debug("PushBullet to Token : {0} - {1} - {2}", options.Token, options.DeviceId, request.Description);
+            _logger.Debug("PushBullet to Token : {0} - {1} - {2} - {3}", options.Token, options.DeviceId, request.Description, options.ChannelTag);
             var _httpRequest = new HttpRequestOptions();
             string authInfo = options.Token;
             authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
