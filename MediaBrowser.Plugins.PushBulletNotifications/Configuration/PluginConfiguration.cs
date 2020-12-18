@@ -19,6 +19,7 @@ namespace MediaBrowser.Plugins.PushBulletNotifications.Configuration
         public Boolean Enabled { get; set; }
         public String Token { get; set; }
         public String DeviceId { get; set; }
+        public String ChannelTag {get; set; }
         public string MediaBrowserUserId { get; set; }
     }
 

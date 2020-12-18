@@ -23,6 +23,12 @@
                             Auth key for your application
                         </div>
                     </div>
+                    <div class="inputContainer">
+                        <input is="emby-input" type="text" id="txtPushBulletChannelTag" label="PushBullet channel tag:" />
+                        <div class="fieldDescription">
+                            Channel Tag to send notifications to
+                        </div>
+                    </div>
                     <div>
                         <button is="emby-button" type="button" class="raised button-cancel block" id="testNotification">
                             <span>Test Notification</span>
@@ -58,6 +64,7 @@
                         page.querySelector('#chkEnablePushBullet').checked = pushBulletConfig.Enabled || false;
                         $('#txtPushBulletAuthKey', page).val(pushBulletConfig.Token || '');
                         $('#txtPushBulletDeviceId', page).val(pushBulletConfig.DeviceId || '');
+                        $('#txtPushBulletChannelTag', page).val(pushBulletConfig.ChannelTag || '');
 
                         Dashboard.hideLoadingMsg();
                     });
@@ -150,6 +157,7 @@
                         pushBulletConfig.Enabled = form.querySelector('#chkEnablePushBullet').checked;
                         pushBulletConfig.Token = $('#txtPushBulletAuthKey', form).val();
                         pushBulletConfig.DeviceId = $('#txtPushBulletDeviceId', form).val();
+                        pushBulletConfig.ChannelTag = $('#txtPushBulletChannelTag', form).val();
 
                         ApiClient.updatePluginConfiguration(pluginId, config).then(Dashboard.processPluginConfigurationUpdateResult);
                     });
