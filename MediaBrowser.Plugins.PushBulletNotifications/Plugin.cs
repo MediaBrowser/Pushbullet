@@ -4,42 +4,64 @@ using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
-using MediaBrowser.Plugins.PushBulletNotifications.Configuration;
 using MediaBrowser.Model.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace MediaBrowser.Plugins.PushBulletNotifications
 {
-    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages, IHasThumbImage
+    public class Plugin : BasePlugin, IHasWebPages, IHasThumbImage, IHasTranslations
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer)
-            : base(applicationPaths, xmlSerializer)
-        {
-            Instance = this;
-        }
-
-        public override string Name
-        {
-            get { return "PushBullet Notifications"; }
-        }
-
         public IEnumerable<PluginPageInfo> GetPages()
         {
             return new[]
             {
                 new PluginPageInfo
                 {
-                    Name = Name,
-                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.config.html"
+                    Name = "pushbulletnotifications",
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbullet.html",
+                    EnableInMainMenu = true,
+                    MenuIcon = "notifications"
+                },
+                new PluginPageInfo
+                {
+                    Name = "pushbulletnotificationsjs",
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbullet.js"
+                },
+                new PluginPageInfo
+                {
+                    Name = "pushbulletnotificationeditorjs",
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbulleteditor.js"
+                },
+                new PluginPageInfo
+                {
+                    Name = "pushbulleteditortemplate",
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbulleteditor.template.html"
                 }
             };
+        }
+
+        public TranslationInfo[] GetTranslations()
+        {
+            var basePath = GetType().Namespace + ".strings.";
+
+            return GetType()
+                .Assembly
+                .GetManifestResourceNames()
+                .Where(i => i.StartsWith(basePath, StringComparison.OrdinalIgnoreCase))
+                .Select(i => new TranslationInfo
+                {
+                    Locale = Path.GetFileNameWithoutExtension(i.Substring(basePath.Length)),
+                    EmbeddedResourcePath = i
+
+                }).ToArray();
         }
 
         public override string Description
         {
             get
             {
-                return "Sends notifications via PushBullet Service.";
+                return "Sends notifications via Pushbullet Service.";
             }
         }
 
@@ -47,6 +69,17 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
         public override Guid Id
         {
             get { return _id; }
+        }
+
+        public static string StaticName = "Pushbullet Notifications";
+
+        /// <summary>
+        /// Gets the name of the plugin
+        /// </summary>
+        /// <value>The name.</value>
+        public override string Name
+        {
+            get { return StaticName; }
         }
 
         public Stream GetThumbImage()
@@ -62,7 +95,5 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
                 return ImageFormat.Jpg;
             }
         }
-
-        public static Plugin Instance { get; private set; }
     }
 }
