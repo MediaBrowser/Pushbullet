@@ -2,28 +2,24 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;</TargetFrameworks>
-    <AssemblyVersion>3.1.5.0</AssemblyVersion>
-    <FileVersion>3.1.5.0</FileVersion>
+    <AssemblyVersion>3.1.6.0</AssemblyVersion>
+    <FileVersion>3.1.6.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Configuration\pushbullet.html" />
-    <None Remove="Configuration\pushbullet.js" />
-    <None Remove="Configuration\pushbulleteditor.js" />
-    <None Remove="Configuration\pushbulleteditor.template.html" />
+    <None Remove="Configuration\entryeditor.js" />
+    <None Remove="Configuration\entryeditor.template.html" />
     <None Remove="thumb.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\pushbullet.html" />
-    <EmbeddedResource Include="Configuration\pushbullet.js" />
-    <EmbeddedResource Include="Configuration\pushbulleteditor.js" />
-    <EmbeddedResource Include="Configuration\pushbulleteditor.template.html" />
+    <EmbeddedResource Include="Configuration\entryeditor.js" />
+    <EmbeddedResource Include="Configuration\entryeditor.template.html" />
     <EmbeddedResource Include="thumb.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="mediabrowser.server.core" Version="4.8.0.20-beta" />
+    <PackageReference Include="mediabrowser.server.core" Version="4.8.0.20-beta10" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 

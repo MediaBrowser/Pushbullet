@@ -12,34 +12,27 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
 {
     public class Plugin : BasePlugin, IHasWebPages, IHasThumbImage, IHasTranslations
     {
+        private const string EditorJsName = "pushbulletnotificationeditorjs";
+
         public IEnumerable<PluginPageInfo> GetPages()
         {
             return new[]
             {
                 new PluginPageInfo
                 {
-                    Name = "pushbulletnotifications",
-                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbullet.html",
-                    EnableInMainMenu = true,
-                    MenuIcon = "notifications"
-                },
-                new PluginPageInfo
-                {
-                    Name = "pushbulletnotificationsjs",
-                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbullet.js"
-                },
-                new PluginPageInfo
-                {
-                    Name = "pushbulletnotificationeditorjs",
-                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbulleteditor.js"
+                    Name = EditorJsName,
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.entryeditor.js"
                 },
                 new PluginPageInfo
                 {
                     Name = "pushbulleteditortemplate",
-                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.pushbulleteditor.template.html"
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.entryeditor.template.html",
+                    IsMainConfigPage = false
                 }
             };
         }
+
+        public string NotificationSetupModuleUrl => GetPluginPageUrl(EditorJsName);
 
         public TranslationInfo[] GetTranslations()
         {

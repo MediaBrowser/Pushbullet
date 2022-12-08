@@ -10,36 +10,38 @@ using System.Threading;
 using System.Threading.Tasks;
 using Emby.Notifications;
 using MediaBrowser.Controller.Configuration;
+using MediaBrowser.Controller;
 
 namespace MediaBrowser.Plugins.PushBulletNotifications
 {
-    public class Notifier : INotifier
+    public class Notifier : IUserNotifier
     {
-        private IServerConfigurationManager _config;
         private ILogger _logger;
+        private IServerApplicationHost _appHost;
         private IHttpClient _httpClient;
 
-        public static string TestNotificationId = "system.pushbulletnotificationtest";
-        public Notifier(IServerConfigurationManager config, ILogger logger, IHttpClient httpClient)
+        public Notifier(ILogger logger, IServerApplicationHost applicationHost, IHttpClient httpClient)
         {
-            _config = config;
             _logger = logger;
+            _appHost = applicationHost;
             _httpClient = httpClient;
         }
 
-        public string Name
-        {
-            get { return Plugin.StaticName; }
-        }
+        private Plugin Plugin => _appHost.Plugins.OfType<Plugin>().First();
 
-        public NotificationInfo[] GetConfiguredNotifications()
-        {
-            return _config.GetConfiguredNotifications();
-        }
+        public string Name => Plugin.StaticName;
+
+        public string Key => "pushbulletnotifications";
+
+        public string SetupModuleUrl => Plugin.NotificationSetupModuleUrl;
 
         public async Task SendNotification(InternalNotificationRequest request, CancellationToken cancellationToken)
         {
-            var options = request.Configuration as PushbulletNotificationInfo;
+            var options = request.Configuration.Options;
+
+            options.TryGetValue("ChannelTag", out string channelTag);
+            options.TryGetValue("Token", out string token);
+            options.TryGetValue("DeviceId", out string deviceId);
 
             var parameters = new Dictionary<string, string>
                 {
@@ -47,12 +49,14 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
                     {"type", "note"},
                     {"title", request.Title},
                     {"body", request.Description},
-                    {"channel_tag", options.ChannelTag}
+                    {"channel_tag", channelTag}
                 };
 
-            _logger.Debug("PushBullet to Token : {0} - {1} - {2} - {3}", options.Token, options.DeviceId, request.Description, options.ChannelTag);
-            var _httpRequest = new HttpRequestOptions();
-            string authInfo = options.Token;
+            var _httpRequest = new HttpRequestOptions
+            {
+                CancellationToken = cancellationToken
+            };
+            string authInfo = token;
             authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
 
             _httpRequest.RequestHeaders["Authorization"] = "Basic " + authInfo;
