@@ -64,7 +64,7 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
             get { return _id; }
         }
 
-        public static string StaticName = "Pushbullet Notifications";
+        public static string StaticName = "Pushbullet";
 
         /// <summary>
         /// Gets the name of the plugin
@@ -72,7 +72,7 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
         /// <value>The name.</value>
         public override string Name
         {
-            get { return StaticName; }
+            get { return StaticName + " Notifications"; }
         }
 
         public Stream GetThumbImage()
