@@ -41,7 +41,6 @@ namespace MediaBrowser.Plugins.PushBulletNotifications
 
             options.TryGetValue("ChannelTag", out string channelTag);
             options.TryGetValue("Token", out string token);
-            options.TryGetValue("DeviceId", out string deviceId);
 
             var parameters = new Dictionary<string, string>
                 {
